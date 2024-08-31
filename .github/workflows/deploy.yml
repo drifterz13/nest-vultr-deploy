@@ -29,8 +29,9 @@ jobs:
       run: |
         docker build -t drifterz13/nest-vultr-deploy .
         docker push drifterz13/nest-vultr-deploy:latest
+        
     # 4. SSH into the VPS
-    - name: SSH to VPS and pull latest code
+    - name: SSH to VPS, deploy, and health check
       uses: appleboy/ssh-action@v0.1.5
       with:
         host: ${{ secrets.VPS_HOST }}
@@ -39,5 +40,7 @@ jobs:
         script: |
           cd ~/nest-vultr-deploy
           git pull origin main
+          docker compose pull
           docker compose down
           docker compose up -d
+          docker image prune -af
