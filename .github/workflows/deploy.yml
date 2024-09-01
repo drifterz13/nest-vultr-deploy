@@ -26,9 +26,12 @@ jobs:
 
     # 3. Build and push Docker image
     - name: Build and push Docker image
-      run: |
-        docker build -t drifterz13/nest-vultr-deploy:${{ github.sha }} -f Dockerfile.prod .
-        docker push drifterz13/nest-vultr-deploy:${{ github.sha }}
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        file: ./Dockerfile.prod
+        push: true
+        tags: drifterz13/nest-vultr-deploy:${{ github.sha }}
         
     # 4. SSH into the VPS
     - name: SSH to VPS, deploy, and health check
@@ -43,6 +46,9 @@ jobs:
           export IMAGE_TAG=${{ github.sha }}
 
           docker compose -f compose.prod.yml pull
-          docker compose -f compose.prod.yml down
           docker compose -f compose.prod.yml up -d --build
+          
+          # Run Prisma migrations and generate client
+          docker compose -f compose.prod.yml exec -T api npx prisma migrate deploy
+          docker compose -f compose.prod.yml exec -T api npx prisma generate
           docker image prune -af
