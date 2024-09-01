@@ -13,10 +13,10 @@ services:
       - caddy_config:/config
 
   api:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: drifterz13/nest-vultr-deploy:${IMAGE_TAG}
+    restart: unless-stopped
     environment:
+      - IMAGE_TAG=${IMAGE_TAG}
       - PORT=8000
     expose:
       - "8000"
