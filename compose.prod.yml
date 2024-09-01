@@ -14,10 +14,11 @@ services:
 
   api:
     image: drifterz13/nest-vultr-deploy:${IMAGE_TAG}
-    restart: unless-stopped
+    restart: on-failure:3
     environment:
       - IMAGE_TAG=${IMAGE_TAG}
       - PORT=8000
+      - DATABASE_URL=file:./db/prod.db
     expose:
       - "8000"
 
