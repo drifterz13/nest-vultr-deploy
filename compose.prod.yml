@@ -18,10 +18,13 @@ services:
     environment:
       - IMAGE_TAG=${IMAGE_TAG}
       - PORT=8000
-      - DATABASE_URL=file:./db/prod.db
+      - DATABASE_URL=file:/app/db/prod.db
     expose:
       - "8000"
+    volumes:
+      - sqlite_data:/app/db
 
 volumes:
   caddy_data:
   caddy_config:
+  sqlite_data:
