@@ -31,7 +31,7 @@ import { v4 as uuidv4 } from 'uuid';
       ),
       defaultMeta: {
         service: 'api',
-        environment: process.env.NODE_ENV || 'development',
+        environment: 'development',
       },
     }),
   ],
