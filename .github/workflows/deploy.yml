@@ -46,7 +46,7 @@ jobs:
           export IMAGE_TAG=${{ github.sha }}
 
           # Create log volume if it doesn't exist
-          docker volume create --name=app_logs || true
+          docker volume create --name=api_logs || true
 
           # Pull and start the main application
           docker compose -f compose.prod.yml pull
