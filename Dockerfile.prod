@@ -6,10 +6,10 @@ RUN apt-get update && apt-get install -y openssl libssl-dev ca-certificates && c
 FROM base AS builder
 WORKDIR /app
 COPY pnpm-lock.yaml ./
-RUN pnpm fetch --prod
+RUN pnpm fetch 
 
 ADD . ./
-RUN pnpm install --prod --offline --frozen-lockfile
+RUN pnpm install --offline --frozen-lockfile
 RUN pnpm run build
 
 FROM base 
