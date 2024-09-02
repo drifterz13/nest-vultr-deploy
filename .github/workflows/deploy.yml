@@ -57,7 +57,7 @@ jobs:
 
           # Restart the monitoring stack
           cd ./monitoring
-          docker compose -d restart
+          docker compose restart
 
           # Clean up unused images
           docker image prune -af
