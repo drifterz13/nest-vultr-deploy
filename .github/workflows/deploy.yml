@@ -45,6 +45,19 @@ jobs:
           git pull origin main
           export IMAGE_TAG=${{ github.sha }}
 
+          # Create log volume if it doesn't exist
+          docker volume create --name=app_logs || true
+
+          # Pull and start the main application
           docker compose -f compose.prod.yml pull
           docker compose -f compose.prod.yml up -d --build
+
+          # Wait for 10 seconds
+          sleep 10
+
+          # Restart the monitoring stack
+          cd ./monitoring
+          docker compose -d restart
+
+          # Clean up unused images
           docker image prune -af

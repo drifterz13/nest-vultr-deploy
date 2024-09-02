@@ -23,8 +23,11 @@ services:
       - "8000"
     volumes:
       - sqlite_data:/app/db
+      - api_logs:/app/log
 
 volumes:
   caddy_data:
   caddy_config:
   sqlite_data:
+  api_logs:
+    external: true
