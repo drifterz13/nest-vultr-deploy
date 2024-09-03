@@ -1,4 +1,4 @@
-api.drifterz13.com, www.api.drifterz13.com {
+:80, :443, api.drifterz13.com, www.api.drifterz13.com {
   reverse_proxy api:8000
 }
 

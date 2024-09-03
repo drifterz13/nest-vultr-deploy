@@ -32,6 +32,8 @@ jobs:
         file: ./Dockerfile.prod
         push: true
         tags: drifterz13/nest-vultr-deploy:${{ github.sha }}
+        cache-from: type=registry,ref=drifterz13/nest-vultr-deploy:latest
+        cache-to: type=inline
         
     # 4. SSH into the VPS
     - name: SSH to VPS, deploy, and health check

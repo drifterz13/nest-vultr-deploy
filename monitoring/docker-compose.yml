@@ -1,11 +1,32 @@
 volumes:
+  prometheus_data:
   api_logs:
     external: true
 
 networks:
-  loki:
+  monitoring:
 
 services:
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    networks:
+      - monitoring
+
+  node-exporter:
+    image: prom/node-exporter:v1.8.2
+    network_mode: host
+    pid: host
+    volumes:
+      - '/:/host:ro,rslave'
+    command:
+      - '--path.rootfs=/host'
+    restart: unless-stopped
+
   loki:
     image: grafana/loki:2.9.2
     ports:
@@ -14,7 +35,7 @@ services:
     volumes:
       - ./loki-config.yml:/etc/loki/local-config.yaml
     networks:
-      - loki
+      - monitoring
 
   promtail:
     image: grafana/promtail:2.9.2
@@ -23,7 +44,7 @@ services:
       - ./promtail-config.yml:/etc/promtail/config.yml
     command: -config.file=/etc/promtail/config.yml
     networks:
-      - loki
+      - monitoring
 
   grafana:
     environment:
@@ -53,4 +74,4 @@ services:
     ports:
       - "3000:3000"
     networks:
-      - loki
+      - monitoring
