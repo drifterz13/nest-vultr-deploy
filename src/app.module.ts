@@ -36,6 +36,10 @@ import { PrometheusModule } from '@willsoto/nestjs-prometheus';
       },
     }),
     PrometheusModule.register({
+      path: '/metrics',
+      defaultMetrics: {
+        enabled: true
+      },
       defaultLabels: {
         app: 'My Api',
       },
