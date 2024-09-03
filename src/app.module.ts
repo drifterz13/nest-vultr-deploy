@@ -7,6 +7,7 @@ import * as winston from 'winston';
 import { WinstonModule } from 'nest-winston';
 import { Request } from 'express';
 import { v4 as uuidv4 } from 'uuid';
+import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 
 @Module({
   imports: [
@@ -32,6 +33,11 @@ import { v4 as uuidv4 } from 'uuid';
       defaultMeta: {
         service: 'api',
         environment: 'development',
+      },
+    }),
+    PrometheusModule.register({
+      defaultLabels: {
+        app: 'My Api',
       },
     }),
   ],

@@ -2,6 +2,6 @@
   reverse_proxy api:8000
 }
 
-grafana.drifterz13.com {
+:3000, grafana.drifterz13.com, www.grafana.drifterz13.com {
   reverse_proxy 207.148.65.139:3000
 }

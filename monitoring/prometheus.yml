@@ -11,6 +11,6 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9100']
 
-  - job_name: 'loki'
+  - job_name: 'api'
     static_configs:
-      - targets: ['loki:3100']
+      - targets: ['207.148.65.139:80']
