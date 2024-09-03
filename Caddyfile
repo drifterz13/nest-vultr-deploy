@@ -1,3 +1,7 @@
-:80, :443 {
+api.drifterz13.com, www.api.drifterz13.com {
   reverse_proxy api:8000
+}
+
+grafana.drifterz13.com {
+  reverse_proxy 207.148.65.139:3000
 }
