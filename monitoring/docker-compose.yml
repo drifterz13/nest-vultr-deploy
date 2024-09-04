@@ -4,7 +4,8 @@ volumes:
     external: true
 
 networks:
-  monitoring:
+  apps_network:
+    external: true
 
 services:
   prometheus:
@@ -15,7 +16,7 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
     networks:
-      - monitoring
+      - apps_network
 
   node-exporter:
     image: prom/node-exporter:v1.8.2
@@ -35,7 +36,7 @@ services:
     volumes:
       - ./loki-config.yml:/etc/loki/local-config.yaml
     networks:
-      - monitoring
+      - apps_network
 
   promtail:
     image: grafana/promtail:2.9.2
@@ -44,7 +45,7 @@ services:
       - ./promtail-config.yml:/etc/promtail/config.yml
     command: -config.file=/etc/promtail/config.yml
     networks:
-      - monitoring
+      - apps_network
 
   grafana:
     environment:
@@ -74,4 +75,4 @@ services:
     ports:
       - "3000:3000"
     networks:
-      - monitoring
+      - apps_network
