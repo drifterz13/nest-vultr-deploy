@@ -31,3 +31,7 @@ volumes:
   sqlite_data:
   api_logs:
     external: true
+
+networks:
+  apps_network:
+    external: true

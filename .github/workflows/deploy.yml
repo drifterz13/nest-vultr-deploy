@@ -50,6 +50,9 @@ jobs:
           # Create log volume if it doesn't exist
           docker volume create --name=api_logs || true
 
+          # Create network if it doesn't exist
+          docker network create apps_network || true
+
           # Pull and start the main application
           docker compose -f compose.prod.yml pull
           docker compose -f compose.prod.yml up -d --build
