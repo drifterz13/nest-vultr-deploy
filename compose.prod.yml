@@ -11,6 +11,8 @@ services:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data
       - caddy_config:/config
+    networks:
+      - apps_network
 
   api:
     image: drifterz13/nest-vultr-deploy:${IMAGE_TAG}
@@ -24,10 +26,16 @@ services:
     volumes:
       - sqlite_data:/app/db
       - api_logs:/app/log
+    networks:
+      - apps_network
 
 volumes:
   caddy_data:
   caddy_config:
   sqlite_data:
   api_logs:
+    external: true
+
+networks:
+  apps_network:
     external: true
