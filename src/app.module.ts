@@ -8,6 +8,7 @@ import { WinstonModule } from 'nest-winston';
 import { Request } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
+import { ProjectsModule } from './projects/projects.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { PrometheusModule } from '@willsoto/nestjs-prometheus';
         enabled: true,
       },
     }),
+    ProjectsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

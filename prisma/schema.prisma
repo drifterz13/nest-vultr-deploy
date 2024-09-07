@@ -14,21 +14,32 @@ datasource db {
 }
 
 model Tasklist {
-  id Int @id @default(autoincrement())
-  title String 
-  tasks Task[]
+  id        Int      @id @default(autoincrement())
+  title     String
+  tasks     Task[]
+  project   Project  @relation(fields: [projectId], references: [id])
+  projectId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  deleted Boolean @default(false)
+  deleted   Boolean  @default(false)
 }
 
 model Task {
-  id Int @id @default(autoincrement())
-  title String 
-  tasklist Tasklist @relation(fields: [tasklistId], references: [id])
+  id         Int      @id @default(autoincrement())
+  title      String
+  tasklist   Tasklist @relation(fields: [tasklistId], references: [id])
   tasklistId Int
-  completed Boolean @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  deleted Boolean @default(false)
+  completed  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  deleted    Boolean  @default(false)
+}
+
+model Project {
+  id        Int        @id @default(autoincrement())
+  title     String
+  tasklists Tasklist[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  deleted   Boolean    @default(false)
 }

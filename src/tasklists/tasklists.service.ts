@@ -9,7 +9,10 @@ export class TasklistsService {
 
   async create(createTasklistDto: CreateTasklistDto) {
     return this.prismaService.tasklist.create({
-      data: { title: createTasklistDto.title },
+      data: {
+        title: createTasklistDto.title,
+        projectId: createTasklistDto.projectId,
+      },
     });
   }
 
