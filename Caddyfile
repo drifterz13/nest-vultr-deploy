@@ -9,3 +9,7 @@
 :9090, prom.drifterz13.com, www.prom.drifterz13.com {
   reverse_proxy prometheus:9090 
 }
+
+:9100 {
+  reverse_proxy node-exporter:9100 
+}
