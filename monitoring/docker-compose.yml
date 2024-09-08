@@ -1,12 +1,3 @@
-volumes:
-  prometheus_data:
-  api_logs:
-    external: true
-  grafana_storage:
-networks:
-  apps_network:
-    external: true
-
 services:
   prometheus:
     image: prom/prometheus:v2.54.1
@@ -50,6 +41,9 @@ services:
       - apps_network
 
   grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
     environment:
       - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
       - GF_AUTH_ANONYMOUS_ENABLED=true
@@ -82,13 +76,18 @@ services:
           editable: false
         EOF
         /run.sh
-    image: grafana/grafana:latest
-    ports:
-      - "3000:3000"
     volumes:
       - grafana_storage:/var/lib/grafana
     networks:
       - apps_network
 
 volumes:
+  prometheus_data:
+  api_logs:
+    external: true
   grafana_storage:
+
+networks:
+  apps_network:
+    external: true
+
