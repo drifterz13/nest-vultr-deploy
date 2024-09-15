@@ -47,5 +47,11 @@ jobs:
         key: ${{ secrets.VPS_PRIVATE_KEY }}
         script: |
           cd ~/nest-vultr-deploy
+
+          docker compose -f compose.prod.yml down
+          docker compose -f monitoring/docker-compose.yml down
+
+          git pull origin main
+
           chmod +x deploy.sh
           ./deploy.sh
