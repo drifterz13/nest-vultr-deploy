@@ -33,7 +33,7 @@ jobs:
         file: ./Dockerfile.prod
         push: true
         tags: |
-          ghcr.io/${{ github.repository }}:${{ github.sha::7 }}
+          ghcr.io/${{ github.repository }}:${{ github.sha }}
           ghcr.io/${{ github.repository }}:latest
         cache-from: type=registry,ref=ghcr.io/${{ github.repository }}:latest
         cache-to: type=inline
