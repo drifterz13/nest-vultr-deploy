@@ -12,7 +12,8 @@ services:
       - "--entryPoints.websecure.address=:443"
       - "--entryPoints.web.http.redirections.entryPoint.to=websecure"
       - "--entryPoints.web.http.redirections.entryPoint.scheme=https"
-      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
       - "--certificatesresolvers.myresolver.acme.email=mixmyxxe@gmail.com"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
     ports:
