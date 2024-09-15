@@ -1,6 +1,7 @@
 services:
   prometheus:
     labels:
+      - "traefik.enable=true"
       - "traefik.http.routers.prometheus.rule=Host(`prometheus.docker.localhost`) || Host(`prom.drifterz13.com`)"
       - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
     image: prom/prometheus:v2.54.1
@@ -14,6 +15,7 @@ services:
 
   node-exporter:
     labels:
+      - "traefik.enable=true"
       - "traefik.http.routers.node-exporter.rule=Host(`node-exporter.docker.localhost`) || Host(`node-exporter.drifterz13.com`)"
       - "traefik.http.services.node-exporter.loadbalancer.server.port=9100"
     image: prom/node-exporter:v1.8.2
@@ -48,6 +50,7 @@ services:
 
   grafana:
     labels:
+      - "traefik.enable=true"
       - "traefik.http.routers.grafana.rule=Host(`grafana.docker.localhost`) || Host(`grafana.drifterz13.com`)"
       - "traefik.http.services.grafana.loadbalancer.server.port=3000"
     image: grafana/grafana:latest
