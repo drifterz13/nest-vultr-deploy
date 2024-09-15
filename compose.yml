@@ -1,41 +1,43 @@
 services:
-  caddy:
-    image: caddy:2.8.4-alpine
-    restart: unless-stopped
+  traefik:
+    image: traefik:v3.1
+    # Enables the web UI and tells Traefik to listen to docker
+    command: 
+      - "--api.insecure=true" 
+      - "--providers.docker"
+      - "--providers.docker.network=traefik_network"
+      - "--metrics.prometheus=true" 
     ports:
+      # The HTTP port
       - "80:80"
-      - "443:443"
-    depends_on:
-      - api
+      # The Web UI (enabled by --api.insecure=true)
+      - "8080:8080"
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
-      - caddy_data:/data
-      - caddy_config:/config
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
-      - apps_network
-
+      - traefik_network
   api:
     build:
       context: .
       dockerfile: Dockerfile
+    labels:
+      - "traefik.http.routers.api.rule=Host(`api.docker.localhost`)"
+      - "traefik.http.services.api.loadbalancer.server.port=8000"
     environment:
       - PORT=8000
       - DATABASE_URL=file:/app/db/dev.db
     expose:
       - "8000"
     volumes:
-      - sqlite_data:/app/db
-      - api_logs:/app/log
+      - db_data:/app/db
     networks:
-      - apps_network
-
-volumes:
-  caddy_data:
-  caddy_config:
-  sqlite_data:
-  api_logs:
-    external: true
+      - traefik_network
 
 networks:
-  apps_network:
+  traefik_network:
     external: true
+
+volumes:
+  db_data:
+

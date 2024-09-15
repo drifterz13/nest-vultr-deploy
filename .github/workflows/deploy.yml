@@ -18,21 +18,24 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Log in to Docker Hub
-      uses: docker/login-action@v2
+    - name: Log in to GitHub Container Registry
+      uses: docker/login-action@v3
       with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
 
     # 3. Build and push Docker image
     - name: Build and push Docker image
-      uses: docker/build-push-action@v4
+      uses: docker/build-push-action@v5
       with:
         context: .
         file: ./Dockerfile.prod
         push: true
-        tags: drifterz13/nest-vultr-deploy:${{ github.sha }}
-        cache-from: type=registry,ref=drifterz13/nest-vultr-deploy:latest
+        tags: |
+          ghcr.io/${{ github.repository }}:${{ github.sha::7 }}
+          ghcr.io/${{ github.repository }}:latest
+        cache-from: type=registry,ref=ghcr.io/${{ github.repository }}:latest
         cache-to: type=inline
         
     # 4. SSH into the VPS
@@ -45,13 +48,12 @@ jobs:
         script: |
           cd ~/nest-vultr-deploy
           git pull origin main
-          export IMAGE_TAG=${{ github.sha }}
 
           # Create log volume if it doesn't exist
           docker volume create --name=api_logs || true
           
           # Create network if it doesn't exist
-          docker network create apps_network || true
+          docker network create traefik_network || true
 
           # Pull and start the main application
           docker compose -f compose.prod.yml pull

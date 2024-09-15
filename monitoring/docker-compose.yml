@@ -1,5 +1,11 @@
 services:
   prometheus:
+    labels:
+      - "traefik.http.routers.prometheus.rule=Host(`prometheus.docker.localhost`) || Host(`prom.drifterz13.com`)"
+      - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
+      - "traefik.http.routers.api.entrypoints=websecure"
+      - "traefik.http.routers.api.tls=true"
+      - "traefik.http.routers.api.tls.certresolver=letsencrypt"
     image: prom/prometheus:v2.54.1
     ports:
       - "9090:9090"
@@ -7,9 +13,15 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
     networks:
-      - apps_network
+      - traefik_network
 
   node-exporter:
+    labels:
+      - "traefik.http.routers.node-exporter.rule=Host(`node-exporter.docker.localhost`) || Host(`node-exporter.drifterz13.com`)"
+      - "traefik.http.services.node-exporter.loadbalancer.server.port=9100"
+      - "traefik.http.routers.api.entrypoints=websecure"
+      - "traefik.http.routers.api.tls=true"
+      - "traefik.http.routers.api.tls.certresolver=letsencrypt"
     image: prom/node-exporter:v1.8.2
     ports:
       - "9100:9100"
@@ -19,7 +31,7 @@ services:
       - '--path.rootfs=/host'
     restart: unless-stopped
     networks:
-      - apps_network
+      - traefik_network
 
   loki:
     image: grafana/loki:2.9.2
@@ -29,7 +41,7 @@ services:
     volumes:
       - ./loki-config.yml:/etc/loki/local-config.yaml
     networks:
-      - apps_network
+      - traefik_network
 
   promtail:
     image: grafana/promtail:2.9.2
@@ -38,9 +50,15 @@ services:
       - ./promtail-config.yml:/etc/promtail/config.yml
     command: -config.file=/etc/promtail/config.yml
     networks:
-      - apps_network
+      - traefik_network
 
   grafana:
+    labels:
+      - "traefik.http.routers.grafana.rule=Host(`grafana.docker.localhost`) || Host(`grafana.drifterz13.com`)"
+      - "traefik.http.routers.api.entrypoints=websecure"
+      - "traefik.http.routers.api.tls=true"
+      - "traefik.http.routers.api.tls.certresolver=letsencrypt"
+      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
     image: grafana/grafana:latest
     ports:
       - "3000:3000"
@@ -79,7 +97,7 @@ services:
     volumes:
       - grafana_storage:/var/lib/grafana
     networks:
-      - apps_network
+      - traefik_network
 
 volumes:
   prometheus_data:
@@ -88,6 +106,6 @@ volumes:
   grafana_storage:
 
 networks:
-  apps_network:
+  traefik_network:
     external: true
 
