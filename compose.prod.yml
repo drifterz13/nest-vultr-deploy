@@ -6,6 +6,7 @@ services:
       - "--api.insecure=true" 
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=traefik_network"
       - "--metrics.prometheus=true"
       - "--entryPoints.web.address=:80"
       - "--entryPoints.websecure.address=:443"
@@ -39,10 +40,11 @@ services:
     networks:
       - traefik_network
     labels:
+      - "--providers.docker.network=traefik_network"
       - "traefik.enable=true"
       - "traefik.http.routers.api.rule=Host(`api.drifterz13.com`)"
-      # - "traefik.http.routers.api.entrypoints=websecure"
-      # - "traefik.http.routers.api.tls.certresolver=myresolver"
+      - "traefik.http.routers.api.entrypoints=websecure"
+      - "traefik.http.routers.api.tls.certresolver=myresolver"
 
 volumes:
   db_data:
