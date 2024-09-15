@@ -4,19 +4,16 @@ services:
     command: 
       - "--log.level=DEBUG"
       - "--api.insecure=true" 
-      - "--providers.docker"
+      - "--providers.docker=true"
       - "--providers.docker.network=traefik_network"
       - "--metrics.prometheus=true"
-      - "--entrypoints.web.address=:80"
-      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
-      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
-      - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.letsencrypt.acme.httpchallenge=true"
-      - "--certificatesresolvers.letsencrypt.acme.caserver=https://acme-v02.api.letsencrypt.org/directory"
-      - "--certificatesresolvers.letsencrypt.acme.email=mixmyxxe@gmail.com"
-      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entryPoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      - "--certificatesresolvers.myresolver.acme.email=mixmyxxe@gmail.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
     ports:
-      - "80:80"
       - "443:443"
       - "8080:8080"
     volumes:
@@ -38,13 +35,12 @@ services:
     networks:
       - traefik_network
     labels:
+      - "traefik.enable=true"
       - "traefik.http.routers.api.rule=Host(`api.drifterz13.com`)"
       - "traefik.http.services.api.loadbalancer.server.port=8000"
       - "traefik.http.routers.api.entrypoints=websecure"
       - "traefik.http.routers.api.tls=true"
-      - "traefik.http.routers.api.tls.certresolver=letsencrypt"
-      - "traefik.http.services.api.loadbalancer.healthcheck.path=/health"
-      - "traefik.http.services.api.loadbalancer.healthcheck.interval=10s"
+      - "traefik.http.routers.api.tls.certresolver=myresolver"
 
 volumes:
   db_data:
