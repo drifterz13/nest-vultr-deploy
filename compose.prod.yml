@@ -23,8 +23,7 @@ services:
       - traefik_network
 
   api:
-    image: drifterz13/nest-vultr-deploy:${IMAGE_TAG}
-    restart: on-failure:3
+    image: ghcr.io/drifterz13/nest-vultr-deploy:latest    
     environment:
       - PORT=8000
       - DATABASE_URL=file:/app/db/prod.db
