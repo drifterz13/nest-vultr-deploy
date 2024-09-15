@@ -2,7 +2,7 @@ services:
   prometheus:
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.prometheus.rule=Host(`prometheus.docker.localhost`) || Host(`prom.drifterz13.com`)"
+      - "traefik.http.routers.prometheus.rule=Host(`prom.drifterz13.com`)"
       - "traefik.http.routers.prometheus.tls=true"
       - "traefik.http.routers.prometheus.tls.certresolver=myresolver"
       - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
@@ -18,7 +18,7 @@ services:
   node-exporter:
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.node-exporter.rule=Host(`node-exporter.docker.localhost`) || Host(`node-exporter.drifterz13.com`)"
+      - "traefik.http.routers.node-exporter.rule=Host(`node-exporter.drifterz13.com`)"
       - "traefik.http.routers.node-exporter.tls=true"
       - "traefik.http.routers.node-exporter.tls.certresolver=myresolver"
       - "traefik.http.services.node-exporter.loadbalancer.server.port=9100"
@@ -55,7 +55,7 @@ services:
   grafana:
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.grafana.rule=Host(`grafana.docker.localhost`) || Host(`grafana.drifterz13.com`)"
+      - "traefik.http.routers.grafana.rule=Host(`grafana.drifterz13.com`)"
       - "traefik.http.routers.grafana.tls=true"
       - "traefik.http.routers.grafana.tls.certresolver=myresolver"
       - "traefik.http.services.grafana.loadbalancer.server.port=3000"

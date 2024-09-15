@@ -10,8 +10,6 @@ services:
       - "--metrics.prometheus=true"
       - "--entryPoints.web.address=:80"
       - "--entryPoints.websecure.address=:443"
-      # - "--entryPoints.web.http.redirections.entryPoint.to=websecure"
-      # - "--entryPoints.web.http.redirections.entryPoint.scheme=https"
       - "--certificatesresolvers.myresolver.acme.dnschallenge=true"
       - "--certificatesresolvers.myresolver.acme.dnschallenge.provider=cloudflare"
       - "--certificatesresolvers.myresolver.acme.email=mixmyxxe@gmail.com"

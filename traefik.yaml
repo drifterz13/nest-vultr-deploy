@@ -1,0 +1,10 @@
+http:
+  routers:
+    myrouter:
+      rule: "Host(`drifterz13.com`)"
+      tls:
+        certResolver: "myresolver"
+        domains:
+          - main: "drifterz13.com"
+            sans:
+              - "*.drifterz13.com"
