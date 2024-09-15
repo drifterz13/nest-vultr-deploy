@@ -47,6 +47,11 @@ jobs:
         key: ${{ secrets.VPS_PRIVATE_KEY }}
         script: |
           cd ~/nest-vultr-deploy
+          
+          # Stop and remove the existing containers
+          docker compose -f compose.prod.yml down
+          docker compose -f monitoring/docker-compose.yml down
+
           git pull origin main
 
           # Create log volume if it doesn't exist

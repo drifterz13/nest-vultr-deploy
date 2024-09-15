@@ -5,7 +5,6 @@ services:
       - "--log.level=DEBUG"
       - "--api.insecure=true" 
       - "--providers.docker=true"
-      - "--providers.docker.network=traefik_network"
       - "--providers.docker.exposedbydefault=false"
       - "--metrics.prometheus=true"
       - "--entryPoints.web.address=:80"
@@ -14,14 +13,6 @@ services:
       - "--certificatesresolvers.myresolver.acme.dnschallenge.provider=cloudflare"
       - "--certificatesresolvers.myresolver.acme.email=mixmyxxe@gmail.com"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.traefik.rule=Host(`traefik.drifterz13.com`)"
-      - "traefik.http.routers.traefik.entrypoints=web"
-      - "traefik.http.routers.traefik.service=api@internal"
-      - "traefik.http.services.traefik.loadbalancer.server.port=8080"
-      - "traefik.http.routers.traefik.tls=true"
-      - "traefik.http.routers.traefik.tls.certresolver=myresolver"
     environment:
       - CF_API_EMAIL=mixmyxxe@gmail.com
       - CF_DNS_API_TOKEN=_5Pqr1G3zDjTW9VuEusQRDTV0VoXOLXqmc5azvbk
@@ -50,8 +41,8 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.api.rule=Host(`api.drifterz13.com`)"
-      - "traefik.http.routers.api.entrypoints=websecure"
-      - "traefik.http.routers.api.tls.certresolver=myresolver"
+      # - "traefik.http.routers.api.entrypoints=websecure"
+      # - "traefik.http.routers.api.tls.certresolver=myresolver"
 
 volumes:
   db_data:
