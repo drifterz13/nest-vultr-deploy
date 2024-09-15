@@ -1,11 +1,8 @@
 services:
   prometheus:
     labels:
-      - "--providers.docker.exposedbydefault=false"
       - "traefik.enable=true"
       - "traefik.http.routers.prometheus.rule=Host(`prom.drifterz13.com`)"
-      - "traefik.http.routers.prometheus.entrypoints=websecure"
-      - "traefik.http.routers.prometheus.tls.certresolver=myresolver"
     image: prom/prometheus:v2.54.1
     ports:
       - "9090:9090"
@@ -17,11 +14,8 @@ services:
 
   node-exporter:
     labels:
-      - "--providers.docker.exposedbydefault=false"
       - "traefik.enable=true"
       - "traefik.http.routers.node-exporter.rule=Host(`node-exporter.drifterz13.com`)"
-      - "traefik.http.routers.node-exporter.entrypoints=websecure"
-      - "traefik.http.routers.node-exporter.tls.certresolver=myresolver"
     image: prom/node-exporter:v1.8.2
     ports:
       - "9100:9100"
@@ -54,11 +48,8 @@ services:
 
   grafana:
     labels:
-      - "--providers.docker.network=traefik_network"
       - "traefik.enable=true"
       - "traefik.http.routers.grafana.rule=Host(`grafana.drifterz13.com`)"
-      - "traefik.http.routers.grafana.entrypoints=websecure"
-      - "traefik.http.routers.grafana.tls.certresolver=myresolver"
     image: grafana/grafana:latest
     ports:
       - "3000:3000"
