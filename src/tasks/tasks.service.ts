@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { omitBy } from 'remeda';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from '../prisma.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 
@@ -11,8 +11,7 @@ export class TasksService {
   async create(createTaskDto: CreateTaskDto) {
     const task = await this.prismaService.task.create({
       data: {
-        title: createTaskDto.title,
-        tasklistId: createTaskDto.tasklistId,
+        ...createTaskDto,
         completed: false,
       },
     });
